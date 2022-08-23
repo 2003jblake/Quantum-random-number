@@ -1,10 +1,7 @@
 from qiskit import *
 
 
-lower, upper = [int(x) for x in input('Enter your lower bound (inclusive) then your upper bound (inclusive). In format n m: ').split()]
-
-
-def convert_to_binary(number):
+def convert_to_binary(number: int) -> str:
     '''Converts a denary number to binary'''
     
     strNum = ''
@@ -32,7 +29,7 @@ def convert_to_binary(number):
 
 
 
-def create_quantum_circuit(bin_upper):
+def create_quantum_circuit(bin_upper: str) -> none:
     '''
     Creates a quantum circuit with length of upper in binary as the amount of qubits.
     Each qubit is then put in super position
@@ -44,7 +41,7 @@ def create_quantum_circuit(bin_upper):
     for i in range (len(bin_upper)):
         qc.h(i)
 
-def run_quantum_circuit():
+def run_quantum_circuit() -> str:
     '''Runs the circuit with one shot and gets the result'''
 
     simulator = Aer.get_backend('qasm_simulator')
@@ -56,7 +53,7 @@ def run_quantum_circuit():
     
     
     
-def convert_to_decimal(number):
+def convert_to_decimal(number: str) -> int:
     '''Converts binary to decimial'''
     
     decimal = 0
@@ -67,8 +64,10 @@ def convert_to_decimal(number):
         number = number[:-1]
     return decimal
     
-def generate_number(lower, upper):
+def generate_number(lower: int, upper: int) -> int:
     '''generates the random number within the specified range'''
+    
+    lower, upper = [int(x) for x in input('Enter your lower bound (inclusive) then your upper bound (inclusive). In format n m: ').split()]
     
     bin_lower = convert_to_binary(lower)
     bin_upper = convert_to_binary(upper)
@@ -79,8 +78,9 @@ def generate_number(lower, upper):
     while int(number) > int(upper) or int(number) < int(lower):
         create_quantum_circuit(bin_upper)
         number = convert_to_decimal(run_quantum_circuit())
+       
     print(number)
+    return(number)
     
-
-    
+   
 generate_number(lower,upper)
