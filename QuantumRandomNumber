@@ -29,7 +29,7 @@ def convert_to_binary(number: int) -> str:
 
 
 
-def create_quantum_circuit(bin_upper: str) -> none:
+def create_quantum_circuit(bin_upper: str) -> None:
     '''
     Creates a quantum circuit with length of upper in binary as the amount of qubits.
     Each qubit is then put in super position
