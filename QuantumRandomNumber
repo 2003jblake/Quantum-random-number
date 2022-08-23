@@ -1,0 +1,76 @@
+from qiskit import *
+
+
+lower, upper = [int(x) for x in input('Enter your lower bound (inclusive) then your upper bound (inclusive). In format n m: ').split()]
+
+#Converts int into its binary equivilant
+def convert_to_binary(number):
+    
+    strNum = ''
+    i = 0
+    while True: 
+        if number < 2**i:
+            i -= 1
+            break
+        elif number == 2**i:
+            break
+        i += 1
+    while True:
+        if number >= 2**i:
+            number -= 2**i
+            strNum += '1'
+            i -= 1
+        else:
+            strNum += '0'
+            i -= 1
+        if i == -1:
+            break
+
+    return strNum
+
+
+
+
+def create_quantum_circuit(bin_upper):
+    global qc
+    qc = QuantumCircuit(len(bin_upper))
+
+    for i in range (len(bin_upper)):
+        qc.h(i)
+
+def run_quantum_circuit():
+
+    simulator = Aer.get_backend('qasm_simulator')
+    qc.measure_all()
+    result = execute(qc, backend = simulator, shots = 1).result()
+    binary_num = str(list(result.get_counts(qc).keys())[0])
+    return binary_num
+    
+    
+    
+    
+def convert_to_decimal(number):
+    decimal = 0
+    for i in range(len(number)):
+        if number[-1] == '1':
+    
+            decimal += 2**i
+        number = number[:-1]
+    return decimal
+    
+def generate_number(lower, upper):
+    
+    bin_lower = convert_to_binary(lower)
+    bin_upper = convert_to_binary(upper)
+    create_quantum_circuit(bin_upper)
+    
+    number = convert_to_decimal(run_quantum_circuit())
+    
+    while int(number) > int(upper) or int(number) < int(lower):
+        create_quantum_circuit(bin_upper)
+        number = convert_to_decimal(run_quantum_circuit())
+    print(number)
+    
+
+    
+generate_number(lower,upper)
